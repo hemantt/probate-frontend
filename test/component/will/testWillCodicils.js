@@ -1,7 +1,7 @@
 'use strict';
-const TestWrapper = require('test/util/TestWrapper'),
-    IhtCompleted = require('app/steps/ui/iht/completed/index'),
-    CodicilsNumber = require('app/steps/ui/will/codicilsnumber/index');
+const TestWrapper = require('test/util/TestWrapper');
+const IhtCompleted = require('app/steps/ui/iht/completed/index');
+const CodicilsNumber = require('app/steps/ui/will/codicilsnumber/index');
 
 describe('will-codicils', () => {
     let testWrapper;

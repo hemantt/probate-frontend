@@ -9,8 +9,12 @@
 <script src="/public/javascripts/application.js"></script>
 
 {% if enableTracking === 'true' %}
-<script src="/public/javascripts/gatracking.js"></script>
+    <script nonce="{{nonce}}">
+        var gatrackingid = "{{gaTrackingId}}";
+    </script>
+    <script src="/public/javascripts/ga-tracking.js"></script>
 {% endif %}
+
 
 <!--[if lte IE 9]>
 <script src="/public/javascripts/form-polyfill.js"></script>

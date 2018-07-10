@@ -3,6 +3,8 @@
 {% from "widgets/lists.html" import unorderedList %}
 {% from "widgets/radiobuttons.html" import optionsRadio %}
 
+{% set displaySignOutLink = 'false' %}
+
 {% block question %}
     <h1 class="form-title heading-large">{{ content.pageHeader }}</h1>
 {% endblock %}
@@ -94,4 +96,6 @@
         <input class="button" type="submit" id="acceptAndSend" value="{{content.submit}}">
     </div>
 
+{% endblock %}
+{% block save_and_close %}
 {% endblock %}

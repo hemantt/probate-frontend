@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    DocumentsPage = require('app/steps/ui/documents/index');
+const TestWrapper = require('test/util/TestWrapper');
+const DocumentsPage = require('app/steps/ui/documents/index');
 
 describe('redirect to documents', () => {
     let testWrapper, sessionData;

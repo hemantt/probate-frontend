@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    ExecutorsWithOtherNames = require('app/steps/ui/executors/othername/index'),
-    ExecutorContactDetails = require('app/steps/ui/executors/contactdetails/index');
+const TestWrapper = require('test/util/TestWrapper');
+const ExecutorsWithOtherNames = require('app/steps/ui/executors/othername/index');
+const ExecutorContactDetails = require('app/steps/ui/executors/contactdetails/index');
 
 describe('executors-alias', () => {
     let testWrapper;

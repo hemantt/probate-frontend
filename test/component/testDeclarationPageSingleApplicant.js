@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-Taskist = require('app/steps/ui/tasklist/index'),
-    declarationContent = require('app/resources/en/translation/declaration');
+const TestWrapper = require('test/util/TestWrapper');
+const Taskist = require('app/steps/ui/tasklist/index');
+const declarationContent = require('app/resources/en/translation/declaration');
 
 describe('declaration, single applicant', () => {
     let testWrapper, contentData, sessionData;

@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    WillCodicils = require('app/steps/ui/will/codicils/index');
+const TestWrapper = require('test/util/TestWrapper');
+const WillCodicils = require('app/steps/ui/will/codicils/index');
 
 describe('will-date', () => {
     let testWrapper;

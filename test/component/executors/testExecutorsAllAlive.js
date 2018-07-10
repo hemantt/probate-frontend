@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    ExecutorsApplying = require('app/steps/ui/executors/applying/index'),
-    ExecutorsWhoDied = require('app/steps/ui/executors/whodied/index');
+const TestWrapper = require('test/util/TestWrapper');
+const ExecutorsApplying = require('app/steps/ui/executors/applying/index');
+const ExecutorsWhoDied = require('app/steps/ui/executors/whodied/index');
 
 describe('executors-all-alive', () => {
     let testWrapper;

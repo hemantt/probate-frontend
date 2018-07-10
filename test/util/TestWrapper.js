@@ -54,6 +54,15 @@ module.exports = class TestWrapper {
             .catch(done);
     }
 
+    testContentNotPresent(done, data) {
+        this.agent.get(this.pageUrl)
+            .then(response => {
+                this.assertContentIsNotPresent(response.text, data);
+                done();
+            })
+            .catch(done);
+    }
+
     testErrors(done, data, type, onlyKeys = []) {
         const contentErrors = get(this.content, 'errors', {});
         const expectedErrors = cloneDeep(isEmpty(onlyKeys) ? contentErrors : filter(contentErrors, (value, key) => onlyKeys.includes(key)));
@@ -118,6 +127,12 @@ module.exports = class TestWrapper {
     assertContentIsPresent(actualContent, expectedContent) {
         forEach(expectedContent, (value) => {
             expect(actualContent.toLowerCase()).to.contain(value.toString().toLowerCase());
+        });
+    }
+
+    assertContentIsNotPresent(actualContent, expectedContent) {
+        forEach(expectedContent, (value) => {
+            expect(actualContent.toLowerCase()).to.not.contain(value.toString().toLowerCase());
         });
     }
 

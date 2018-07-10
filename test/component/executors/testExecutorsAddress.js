@@ -1,7 +1,7 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    DeceasedName = require('app/steps/ui/deceased/name/index'),
-    ExecutorContactDetails = require('app/steps/ui/executors/contactdetails/index'),
-    ExecutorRoles = require('app/steps/ui/executors/roles/index');
+const TestWrapper = require('test/util/TestWrapper');
+const DeceasedName = require('app/steps/ui/deceased/name/index');
+const ExecutorContactDetails = require('app/steps/ui/executors/contactdetails/index');
+const ExecutorRoles = require('app/steps/ui/executors/roles/index');
 
 describe('executors-address', () => {
     let testWrapper, sessionData;

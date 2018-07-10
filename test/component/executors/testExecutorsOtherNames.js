@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    ExecutorCurrentName = require('app/steps/ui/executors/currentname/index');
+const TestWrapper = require('test/util/TestWrapper');
+const ExecutorCurrentName = require('app/steps/ui/executors/currentname/index');
 
 describe('executors-other-names', () => {
     let testWrapper, sessionData;

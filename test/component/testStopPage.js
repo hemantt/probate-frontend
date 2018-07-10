@@ -1,5 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-      config = require('app/config');
+const TestWrapper = require('test/util/TestWrapper');
+const config = require('app/config');
+const commonContent = require('app/resources/en/translation/common');
 
 describe('stop-page', () => {
     let testWrapper;
@@ -60,6 +61,13 @@ describe('stop-page', () => {
             const excludeKeys = ['noWill', 'notOriginal', 'codicils', 'executorApplying', 'notExecutor'];
 
             testWrapper.testContent(done, excludeKeys, {ihtNotCompleted: config.links.ihtNotCompleted});
+        });
+
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+
+            testWrapper.testContentNotPresent(done, playbackData);
         });
     });
 });

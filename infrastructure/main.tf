@@ -76,6 +76,7 @@ module "probate-frontend-redis-cache" {
   location = "${var.location}"
   env      = "${var.env}"
   subnetid = "${data.terraform_remote_state.core_apps_infrastructure.subnet_ids[1]}"
+  common_tags  = "${var.common_tags}"
 }
 
 module "probate-frontend" {
@@ -89,6 +90,7 @@ module "probate-frontend" {
   asp_name     = "${var.product}-${var.env}-asp"
   additional_host_name = "${var.external_host_name}"  // need to give proper url
   capacity     = "${var.capacity}"
+  common_tags  = "${var.common_tags}"
 
   app_settings = {
     

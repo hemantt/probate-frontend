@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    ExecutorsAllAlive = require('app/steps/ui/executors/allalive/index');
+const TestWrapper = require('test/util/TestWrapper');
+const ExecutorsAllAlive = require('app/steps/ui/executors/allalive/index');
 
 describe('executors-names', () => {
     let testWrapper, sessionData;

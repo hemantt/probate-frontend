@@ -1,9 +1,10 @@
-const TestWrapper = require('test/util/TestWrapper'),
-sinon = require('sinon'),
-when = require('when'),
-{assert} = require('chai'),
-services = require('app/components/services'),
-CoApplicantStartPage = require('app/steps/ui/coapplicant/startpage/index');
+const TestWrapper = require('test/util/TestWrapper');
+const sinon = require('sinon');
+const when = require('when');
+const {assert} = require('chai');
+const services = require('app/components/services');
+const CoApplicantStartPage = require('app/steps/ui/coapplicant/startpage/index');
+const commonContent = require('app/resources/en/translation/common');
 
 describe('pin-page', () => {
     let testWrapper;
@@ -79,5 +80,12 @@ describe('pin-page', () => {
 
         });
 
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+            playbackData.signOut = commonContent.signOut;
+
+            testWrapper.testContentNotPresent(done, playbackData);
+        });
     });
 });

@@ -1,6 +1,7 @@
-const TestWrapper = require('test/util/TestWrapper'),
-services = require('app/components/services'),
-sinon = require('sinon');
+const TestWrapper = require('test/util/TestWrapper');
+const services = require('app/components/services');
+const sinon = require('sinon');
+const commonContent = require('app/resources/en/translation/common');
 
 describe('co-applicant-start-page', () => {
     let testWrapper, checkAllAgreedStub;
@@ -43,5 +44,12 @@ describe('co-applicant-start-page', () => {
                 });
         });
 
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+            playbackData.signOut = commonContent.signOut;
+
+            testWrapper.testContentNotPresent(done, playbackData);
+        });
     });
 });

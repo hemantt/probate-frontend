@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    WillDate = require('app/steps/ui/will/date/index'),
-    StopPage = require('app/steps/ui/stoppage/index');
+const TestWrapper = require('test/util/TestWrapper');
+const WillDate = require('app/steps/ui/will/date/index');
+const StopPage = require('app/steps/ui/stoppage/index');
 
 describe('will-original', () => {
     let testWrapper;

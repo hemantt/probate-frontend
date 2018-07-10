@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    DeceasedName = require('app/steps/ui/deceased/name/index'),
-    ExecutorRoles = require('app/steps/ui/executors/roles/index');
+const TestWrapper = require('test/util/TestWrapper');
+const DeceasedName = require('app/steps/ui/deceased/name/index');
+const ExecutorRoles = require('app/steps/ui/executors/roles/index');
 
 describe('executor-notified', () => {
     let testWrapper, sessionData;

@@ -23,6 +23,8 @@ const fs = require('fs');
 const https = require('https');
 const appInsights = require('applicationinsights');
 const commonContent = require('app/resources/en/translation/common');
+const uuidv4 = require('uuid/v4');
+const uuid = uuidv4();
 
 exports.init = function() {
     const app = express();
@@ -57,7 +59,8 @@ exports.init = function() {
         'gaTrackingId': config.gaTrackingId,
         'enableTracking': config.enableTracking,
         'links': config.links,
-        'helpline': config.helpline
+        'helpline': config.helpline,
+        'nonce': uuid
     };
 
     const njk = nunjucks(app, {
@@ -78,7 +81,14 @@ exports.init = function() {
         directives: {
             defaultSrc: ['\'self\''],
             fontSrc: ['\'self\' data:'],
-            scriptSrc: ['\'self\'', '\'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=\'', '\'sha256-AaA9Rn5LTFZ5vKyp3xOfFcP4YbyOjvWn2up8IKHVAKk=\'', '\'sha256-G29/qSW/JHHANtFhlrZVDZW1HOkCDRc78ggbqwwIJ2g=\'', 'www.google-analytics.com'],
+            scriptSrc: [
+                '\'self\'',
+                '\'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU=\'',
+                '\'sha256-AaA9Rn5LTFZ5vKyp3xOfFcP4YbyOjvWn2up8IKHVAKk=\'',
+                '\'sha256-G29/qSW/JHHANtFhlrZVDZW1HOkCDRc78ggbqwwIJ2g=\'',
+                'www.google-analytics.com',
+                `'nonce-${uuid}'`
+            ],
             connectSrc: ['\'self\''],
             mediaSrc: ['\'self\''],
             frameSrc: ['\'none\''],

@@ -1,11 +1,12 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    sinon = require('sinon'),
-    when = require('when'),
-    services = require('app/components/services'),
-    json = require('app/resources/en/translation/coapplicant/declaration.json'),
-    sessionData = require('test/data/complete-form-undeclared'),
-    CoApplicantAgreePage = require('app/steps/ui/coapplicant/agreepage/index'),
-    CoApplicantDisagreePage = require('app/steps/ui/coapplicant/disagreepage/index');
+const TestWrapper = require('test/util/TestWrapper');
+const sinon = require('sinon');
+const when = require('when');
+const services = require('app/components/services');
+const json = require('app/resources/en/translation/coapplicant/declaration.json');
+const sessionData = require('test/data/complete-form-undeclared');
+const CoApplicantAgreePage = require('app/steps/ui/coapplicant/agreepage/index');
+const CoApplicantDisagreePage = require('app/steps/ui/coapplicant/disagreepage/index');
+const commonContent = require('app/resources/en/translation/common');
 
 describe('co-applicant-declaration', () => {
     let testWrapper, updateInviteDataStub, checkAllAgreedStub;
@@ -71,5 +72,12 @@ describe('co-applicant-declaration', () => {
             testWrapper.testRedirect(done, data, expectedNextUrlForCoAppDisagree);
         });
 
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+            playbackData.signOut = commonContent.signOut;
+
+            testWrapper.testContentNotPresent(done, playbackData);
+        });
     });
 });

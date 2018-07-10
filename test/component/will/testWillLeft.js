@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    WillOriginal = require('app/steps/ui/will/original/index'),
-    StopPage = require('app/steps/ui/stoppage/index');
+const TestWrapper = require('test/util/TestWrapper');
+const WillOriginal = require('app/steps/ui/will/original/index');
+const StopPage = require('app/steps/ui/stoppage/index');
 
 describe('will-left', () => {
     let testWrapper;

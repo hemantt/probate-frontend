@@ -2,9 +2,10 @@
 {% from "widgets/textfields.html" import passwordField %}
 
 {% block page_title %}
-{{ content.title| safe }}
+    {{ content.title| safe }}
 {% endblock %}
 
+{% set displaySignOutLink = 'false' %}
 
 {% block form_content %}
     <h1 class="form-title heading-large pin-main-header">{{content.header | safe}}</h1>
@@ -31,4 +32,6 @@
         </div>
 
     <a href="/pin-resend">{{content.forgottenCode | safe}}</a>
+{% endblock %}
+{% block save_and_close %}
 {% endblock %}

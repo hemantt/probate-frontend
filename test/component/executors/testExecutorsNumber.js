@@ -1,6 +1,6 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    DeceasedName = require('app/steps/ui/deceased/name/index'),
-    ExecutorsNames = require('app/steps/ui/executors/names/index');
+const TestWrapper = require('test/util/TestWrapper');
+const DeceasedName = require('app/steps/ui/deceased/name/index');
+const ExecutorsNames = require('app/steps/ui/executors/names/index');
 
 describe('executors-number', () => {
     let testWrapper;

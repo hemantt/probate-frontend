@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block form_content %}
-    
+
     <p>{{content.paragraph1 | safe}}</p>
 
     {{ unorderedList([content["applicant-rights1"], content["applicant-rights2"], content["applicant-rights3"]])}}
@@ -20,7 +20,7 @@
         legend = content.legend,
         inline = true
     )}}
-    <div class="formgroup">
+    <div class="form-group">
         <input class="button" type="submit" value="{{common.continue}}">
     </div>
 {% endblock %}

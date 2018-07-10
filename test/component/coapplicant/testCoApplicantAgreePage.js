@@ -49,5 +49,13 @@ describe('co-applicant-agree-page', () => {
                     testWrapper.testContent(done, contentToExclude, contentData);
                 });
         });
+
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+            playbackData.signOut = commonContent.signOut;
+
+            testWrapper.testContentNotPresent(done, playbackData);
+        });
     });
 });

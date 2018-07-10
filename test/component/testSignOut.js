@@ -1,13 +1,12 @@
+'use strict';
 const TestWrapper = require('test/util/TestWrapper');
-const TaskList = require('app/steps/ui/tasklist/index');
 const commonContent = require('app/resources/en/translation/common');
 
-describe('start-page', () => {
+describe('sign-out', () => {
     let testWrapper;
-    const expectedNextUrlForTaskList = TaskList.getUrl();
 
     beforeEach(() => {
-        testWrapper = new TestWrapper('StartPage');
+        testWrapper = new TestWrapper('SignOut');
     });
 
     afterEach(() => {
@@ -19,11 +18,7 @@ describe('start-page', () => {
         it('test right content loaded on the page', (done) => {
             const excludeKeys = [];
 
-            testWrapper.testContent(done, excludeKeys);
-        });
-
-        it(`test it redirects to next page: ${expectedNextUrlForTaskList}`, (done) => {
-            testWrapper.testRedirect(done, {}, expectedNextUrlForTaskList);
+            testWrapper.testContent(done, excludeKeys, {});
         });
 
         it('test save and close link is not displayed on the page', (done) => {

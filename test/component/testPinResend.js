@@ -1,9 +1,10 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    sinon = require('sinon'),
-    when = require('when'),
-    {assert} = require('chai'),
-    services = require('app/components/services'),
-    PinSent = require('app/steps/ui/pin/sent/index');
+const TestWrapper = require('test/util/TestWrapper');
+const sinon = require('sinon');
+const when = require('when');
+const {assert} = require('chai');
+const services = require('app/components/services');
+const PinSent = require('app/steps/ui/pin/sent/index');
+const commonContent = require('app/resources/en/translation/common');
 
 describe('pin-resend', () => {
     let testWrapper;
@@ -76,6 +77,14 @@ describe('pin-resend', () => {
                             done(err);
                         });
                 });
+        });
+
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+            playbackData.signOut = commonContent.signOut;
+
+            testWrapper.testContentNotPresent(done, playbackData);
         });
     });
 });

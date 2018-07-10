@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    TaskList = require('app/steps/ui/tasklist/index');
+const TestWrapper = require('test/util/TestWrapper');
+const TaskList = require('app/steps/ui/tasklist/index');
 
 describe('executors-invites-sent', () => {
     let testWrapper;

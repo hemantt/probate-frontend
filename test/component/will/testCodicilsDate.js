@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    IhtCompleted = require('app/steps/ui/iht/completed/index');
+const TestWrapper = require('test/util/TestWrapper');
+const IhtCompleted = require('app/steps/ui/iht/completed/index');
 
 describe('codicils-date', () => {
     let testWrapper;

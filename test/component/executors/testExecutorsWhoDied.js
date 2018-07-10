@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    ExecutorsWhenDied = require('app/steps/ui/executors/whendied/index');
+const TestWrapper = require('test/util/TestWrapper');
+const ExecutorsWhenDied = require('app/steps/ui/executors/whendied/index');
 
 describe('executors-who-died', () => {
     let testWrapper, sessionData;

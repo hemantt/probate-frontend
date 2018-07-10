@@ -1,6 +1,6 @@
-const Step = require('app/core/steps/Step'),
-    services = require('app/components/services'),
-    WithLinkStepRunner = require('app/core/runners/WithLinkStepRunner');
+const Step = require('app/core/steps/Step');
+const services = require('app/components/services');
+const WithLinkStepRunner = require('app/core/runners/WithLinkStepRunner');
 
 module.exports = class PinResend extends Step {
 

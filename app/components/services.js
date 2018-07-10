@@ -205,6 +205,16 @@ const updatePhoneNumber = (inviteId, data) => {
     return utils.fetchJson(findInviteUrl, fetchOptions);
 };
 
+const signOut = (access_token) => {
+    logger.info('signing out of IDAM');
+    const clientName = config.services.idam.probate_oauth2_client;
+    const headers = {
+        'Authorization': `Basic ${new Buffer(`${clientName}:${secret}`).toString('base64')}`,
+    };
+    const fetchOptions = utils.fetchOptions({}, 'DELETE', headers);
+    return utils.fetchJson(`${IDAM_SERVICE_URL}/session/${access_token}`, fetchOptions);
+};
+
 module.exports = {
     getUserDetails,
     findAddress,
@@ -221,5 +231,6 @@ module.exports = {
     sendPin,
     sendInvite,
     updatePhoneNumber,
-    checkAllAgreed
+    checkAllAgreed,
+    signOut
 };

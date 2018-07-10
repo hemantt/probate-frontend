@@ -1,5 +1,5 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    ExecutorAddress = require('app/steps/ui/executors/address/index');
+const TestWrapper = require('test/util/TestWrapper');
+const ExecutorAddress = require('app/steps/ui/executors/address/index');
 
 describe('executors-contact-details', () => {
     let testWrapper, sessionData;

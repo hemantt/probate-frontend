@@ -1,5 +1,6 @@
 const TestWrapper = require('test/util/TestWrapper'),
     PinPage = require('app/steps/ui/pin/signin/index');
+const commonContent = require('app/resources/en/translation/common');
 
 describe('pin-sent', () => {
     let testWrapper;
@@ -25,6 +26,14 @@ describe('pin-sent', () => {
 
         it(`test it redirects to next page: ${expectedNextUrlForPinPage}`, (done) => {
             testWrapper.testRedirect(done, {}, expectedNextUrlForPinPage);
+        });
+
+        it('test save and close link is not displayed on the page', (done) => {
+            const playbackData = {};
+            playbackData.saveAndClose = commonContent.saveAndClose;
+            playbackData.signOut = commonContent.signOut;
+
+            testWrapper.testContentNotPresent(done, playbackData);
         });
     });
 });

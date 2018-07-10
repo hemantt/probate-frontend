@@ -1,9 +1,9 @@
-const TestWrapper = require('test/util/TestWrapper'),
-    services = require('app/components/services'),
-    sinon = require('sinon'),
-    when = require('when'),
-    {assert} = require('chai'),
-    ExecutorsInvitesSent = require('app/steps/ui/executors/invitesent/index');
+const TestWrapper = require('test/util/TestWrapper');
+const services = require('app/components/services');
+const sinon = require('sinon');
+const when = require('when');
+const {assert} = require('chai');
+const ExecutorsInvitesSent = require('app/steps/ui/executors/invitesent/index');
 
 describe('executors-invite', () => {
     let testWrapper;
