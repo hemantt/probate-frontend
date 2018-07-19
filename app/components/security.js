@@ -96,6 +96,8 @@ module.exports = class Security {
 
             const redirectInfo = self._getRedirectCookie(req);
 
+            logger.info('Called oAuth2CallbackEndpoint');
+
             if (!redirectInfo) {
                 logger.error('Redirect cookie is missing');
                 self._denyAccess(res);
@@ -106,13 +108,17 @@ module.exports = class Security {
                 logger.error('States do not match: ' + redirectInfo.state + ' is not ' + req.query.state);
                 self._denyAccess(res);
             } else {
+                logger.info('Calling _getTokenFromCode');
                 self._getTokenFromCode(req)
                 .then(result => {
+                    logger.info('Called _getTokenFromCode');
                     if (result.name === 'Error') {
                         logger.error('Error while getting the access token');
                         if (result.message === 'Unauthorized') {
+                            logger.info('_getTokenFromCode: result.message is Unauthorized');
                             self._login(req, res);
                         } else {
+                            logger.info('_getTokenFromCode: result.message is not Unauthorized');
                             self._denyAccess(res);
                         }
                     } else {
