@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "executors-update-invite",
+  "id": "executors-update-invite-sent",
   "type": "object",
   "properties": {}
 }
