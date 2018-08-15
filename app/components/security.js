@@ -32,27 +32,32 @@ module.exports = class Security {
             }
 
             // Retrieve user details
-            if (securityCookie) {
-                services.getUserDetails(securityCookie)
-                    .then(response => {
-                        if (response.name !== 'Error') {
-                            req.session.regId = response.email;
-                            req.userId = response.id;
-                            req.authToken = securityCookie;
-                            self._authorize(res, next, response.roles, authorisedRoles);
-                        } else {
-                            logger.error('Error authorising user');
-                            logger.error(`Error ${JSON.stringify(response)} \n`);
-                            if (response.message === 'Unauthorized') {
-                                self._login(req, res);
-                            } else {
-                                self._denyAccess(res);
-                            }
-                        }
-                    });
-            } else {
-                self._login(req, res);
-            }
+            services.featureToggle()
+                .then(result => {
+                    if (result === 'true') {
+                        res.redirect('shutter-page');
+                    } else if (securityCookie) {
+                        services.getUserDetails(securityCookie)
+                            .then(response => {
+                                if (response.name !== 'Error') {
+                                    req.session.regId = response.email;
+                                    req.userId = response.id;
+                                    req.authToken = securityCookie;
+                                    self._authorize(res, next, response.roles, authorisedRoles);
+                                } else {
+                                    logger.error('Error authorising user');
+                                    logger.error(`Error ${JSON.stringify(response)} \n`);
+                                    if (response.message === 'Unauthorized') {
+                                        self._login(req, res);
+                                    } else {
+                                        self._denyAccess(res);
+                                    }
+                                }
+                            });
+                    } else {
+                        self._login(req, res);
+                    }
+                });
         };
     }
 

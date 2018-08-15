@@ -8,6 +8,7 @@ const logger = require('app/components/logger');
 const {get, includes, isEqual} = require('lodash');
 const commonContent = require('app/resources/en/translation/common');
 const ExecutorsWrapper = require('app/wrappers/Executors');
+// const featureToggle = require('app/components/featuretoggle');
 
 router.all('*', (req, res, next) => {
     req.log = logger(req.sessionID);
@@ -27,17 +28,26 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    services.loadFormData(req.session.regId)
+    req.log.info('before featureToggle');
+    services.featureToggle()
         .then(result => {
-            if (result.name === 'Error') {
-                req.log.debug('Failed to load user data');
-                req.log.info({tags: 'Analytics'}, 'Application Started');
+            if (result === 'true') {
+                res.redirect('shutter-page');
             } else {
-                req.log.debug('Successfully loaded user data');
-                req.session.form = result.formdata;
+                services.loadFormData(req.session.regId)
+                .then(result => {
+                    if (result.name === 'Error') {
+                        req.log.debug('Failed to load user data');
+                        req.log.info({tags: 'Analytics'}, 'Application Started');
+                    } else {
+                        req.log.debug('Successfully loaded user data');
+                        req.session.form = result.formdata;
+                    }
+                    res.redirect('tasklist');
+                });
             }
-            res.redirect('tasklist');
         });
+
 });
 
 router.use((req, res, next) => {
