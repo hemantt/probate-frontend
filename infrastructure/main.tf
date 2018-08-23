@@ -91,7 +91,7 @@ module "probate-frontend" {
   additional_host_name = "${var.external_host_name}"  // need to give proper url
   capacity     = "${var.capacity}"
   common_tags  = "${var.common_tags}"
-
+  asp_rg       = "mgmt-asp-${var.env}"
   app_settings = {
     
     // Node specific vars
