@@ -87,11 +87,11 @@ module "probate-frontend" {
   ilbIp = "${var.ilbIp}"
   is_frontend = "${var.env != "preview" ? 1: 0}"
   subscription = "${var.subscription}"
-  asp_name     = "${var.product}-${var.env}-asp"
+  asp_name     = "${var.product}-${var.env}"
   additional_host_name = "${var.external_host_name}"  // need to give proper url
   capacity     = "${var.capacity}"
   common_tags  = "${var.common_tags}"
-  asp_rg       = "mgmt-asp-${var.env}"
+  asp_rg       = "${var.product}-shared-infrastructure-${var.env}"
   app_settings = {
     
     // Node specific vars
