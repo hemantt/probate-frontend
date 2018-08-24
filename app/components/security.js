@@ -103,7 +103,7 @@ module.exports = class Security {
             services.featureToggle(FrontendDemo)
             .then(result => {
                 if (result === 'true') {
-                    result.redirect('shutter-page');
+                    res.redirect('shutter-page');
                 } else {
                     const redirectInfo = self._getRedirectCookie(req);
 
