@@ -8,7 +8,7 @@ const logger = require('app/components/logger');
 const {get, includes, isEqual} = require('lodash');
 const commonContent = require('app/resources/en/translation/common');
 const ExecutorsWrapper = require('app/wrappers/Executors');
-// const featureToggle = require('app/components/featuretoggle');
+const FrontendShutter = config.featureToggles.fe_shutter_toggle;
 
 router.all('*', (req, res, next) => {
     req.log = logger(req.sessionID);
@@ -29,7 +29,7 @@ router.use((req, res, next) => {
 
 router.get('/', (req, res) => {
     req.log.info('before featureToggle');
-    services.featureToggle()
+    services.featureToggle(FrontendShutter)
         .then(result => {
             if (result === 'true') {
                 res.redirect('shutter-page');

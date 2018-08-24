@@ -4,7 +4,10 @@ module.exports = {
     nodeEnvironment: process.env.NODE_ENV,
     gitRevision: process.env.GIT_REVISION,
     frontendPublicHttpProtocol: process.env.PUBLIC_PROTOCOL || 'http',
-    featureTogglesApi: process.env.FEATURE_TOGGLES_API_URL || 'http://rpe-feature-toggle-api-demo.service.core-compute-demo.internal',
+    featureToggles: {
+        api_url: process.env.FEATURE_TOGGLES_API_URL || 'http://rpe-feature-toggle-api-demo.service.core-compute-demo.internal',
+        fe_shutter_toggle: 'probate-fe-shutter'
+    },
     app: {
         username: process.env.USERNAME,
         password: process.env.PASSWORD,

@@ -6,6 +6,7 @@ const services = require('app/components/services');
 const logger = require('app/components/logger')('Init');
 const URL = require('url');
 const UUID = require('uuid/v4');
+const FrontendShutter = config.featureToggles.fe_shutter_toggle;
 
 const SECURITY_COOKIE = '__auth-token-' + config.payloadVersion;
 const REDIRECT_COOKIE = '__redirect';
@@ -32,7 +33,7 @@ module.exports = class Security {
             }
 
             // Retrieve user details
-            services.featureToggle()
+            services.featureToggle(FrontendShutter)
                 .then(result => {
                     if (result === 'true') {
                         res.redirect('shutter-page');
