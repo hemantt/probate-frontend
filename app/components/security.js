@@ -7,6 +7,7 @@ const logger = require('app/components/logger')('Init');
 const URL = require('url');
 const UUID = require('uuid/v4');
 const FrontendShutter = config.featureToggles.fe_shutter_toggle;
+// const FrontendDemo = config.featureToggles.frontend_demo;
 
 const SECURITY_COOKIE = '__auth-token-' + config.payloadVersion;
 const REDIRECT_COOKIE = '__redirect';
@@ -97,38 +98,44 @@ module.exports = class Security {
     }
 
     oAuth2CallbackEndpoint() {
-        const self = this;
-        return function (req, res) {
-
-            const redirectInfo = self._getRedirectCookie(req);
-
-            if (!redirectInfo) {
-                logger.error('Redirect cookie is missing');
-                self._login(req, res);
-            } else if (!req.query.code) {
-                logger.warn('No code received');
-                res.redirect(redirectInfo.continue_url);
-            } else if (redirectInfo.state !== req.query.state) {
-                logger.error('States do not match: ' + redirectInfo.state + ' is not ' + req.query.state);
-                self._denyAccess(res);
+        services.featureToggle(FrontendDemo)
+        .then(result => {
+            if (result === 'true') {
+                res.redirect('shutter-page');
             } else {
-                self._getTokenFromCode(req)
-                .then(result => {
-                    if (result.name === 'Error') {
-                        logger.error('Error while getting the access token');
-                        if (result.message === 'Unauthorized') {
-                            self._login(req, res);
-                        } else {
-                            self._denyAccess(res);
-                        }
-                    } else {
-                        self._storeCookie(req, res, result[ACCESS_TOKEN_OAUTH2], SECURITY_COOKIE);
-                        res.clearCookie(REDIRECT_COOKIE);
+                const self = this;
+                return function (req, res) {
+
+                    const redirectInfo = self._getRedirectCookie(req);
+
+                    if (!redirectInfo) {
+                        logger.error('Redirect cookie is missing');
+                        self._login(req, res);
+                    } else if (!req.query.code) {
+                        logger.warn('No code received');
                         res.redirect(redirectInfo.continue_url);
+                    } else if (redirectInfo.state !== req.query.state) {
+                        logger.error('States do not match: ' + redirectInfo.state + ' is not ' + req.query.state);
+                        self._denyAccess(res);
+                    } else {
+                        self._getTokenFromCode(req)
+                        .then(result => {
+                            if (result.name === 'Error') {
+                                logger.error('Error while getting the access token');
+                                if (result.message === 'Unauthorized') {
+                                    self._login(req, res);
+                                } else {
+                                    self._denyAccess(res);
+                                }
+                            } else {
+                                self._storeCookie(req, res, result[ACCESS_TOKEN_OAUTH2], SECURITY_COOKIE);
+                                res.clearCookie(REDIRECT_COOKIE);
+                                res.redirect(redirectInfo.continue_url);
+                            }
+                        });
                     }
-                });
+                };
             }
-        };
     }
 
     _getTokenFromCode(req) {
