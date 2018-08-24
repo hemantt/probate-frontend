@@ -98,14 +98,13 @@ module.exports = class Security {
     }
 
     oAuth2CallbackEndpoint() {
-        services.featureToggle(FrontendDemo)
-        .then(result => {
-            if (result === 'true') {
-                result.redirect('shutter-page');
-            } else {
-                const self = this;
-                return function (req, res) {
-
+        const self = this;
+        return function (req, res) {
+            services.featureToggle(FrontendDemo)
+            .then(result => {
+                if (result === 'true') {
+                    result.redirect('shutter-page');
+                } else {
                     const redirectInfo = self._getRedirectCookie(req);
 
                     if (!redirectInfo) {
@@ -134,11 +133,10 @@ module.exports = class Security {
                             }
                         });
                     }
-                };
-            }
-
-    });
-}
+                }
+            });
+        };
+    }
 
     _getTokenFromCode(req) {
         const hostname = FormatUrl.createHostname(req);
