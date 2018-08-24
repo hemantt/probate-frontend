@@ -7,7 +7,7 @@ const logger = require('app/components/logger')('Init');
 const URL = require('url');
 const UUID = require('uuid/v4');
 const FrontendShutter = config.featureToggles.fe_shutter_toggle;
-// const FrontendDemo = config.featureToggles.frontend_demo;
+const FrontendDemo = config.featureToggles.frontend_demo;
 
 const SECURITY_COOKIE = '__auth-token-' + config.payloadVersion;
 const REDIRECT_COOKIE = '__redirect';
@@ -101,7 +101,7 @@ module.exports = class Security {
         services.featureToggle(FrontendDemo)
         .then(result => {
             if (result === 'true') {
-                res.redirect('shutter-page');
+                result.redirect('shutter-page');
             } else {
                 const self = this;
                 return function (req, res) {
@@ -136,7 +136,9 @@ module.exports = class Security {
                     }
                 };
             }
-    }
+
+    });
+}
 
     _getTokenFromCode(req) {
         const hostname = FormatUrl.createHostname(req);
