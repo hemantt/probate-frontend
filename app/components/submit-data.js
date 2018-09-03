@@ -9,7 +9,7 @@ const dataMap = {
     applicantAddress: 'applicant.address',
     applicantPostcode: 'applicant.postcode',
     applicantPhone: 'applicant.phoneNumber',
-    applicantEmail: 'applicant.email',
+    applicantEmail: 'applicantEmail',
     applicantIsExecutor: 'applicant.executor',
     deceasedFirstname: 'deceased.firstName',
     deceasedSurname: 'deceased.lastName',
@@ -38,7 +38,10 @@ const dataMap = {
     paymentReference: 'payment.paymentReference',
     legalStatement: 'declaration.legalStatement',
     declaration: 'declaration.declaration',
-    payloadVersion: 'payloadVersion'
+    payloadVersion: 'payloadVersion',
+    paymentResponse: 'paymentResponse',
+    caseId: 'ccdCase.id',
+    registry: 'registry'
 };
 
 const submitData = (ctx, data) => {

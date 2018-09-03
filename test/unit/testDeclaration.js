@@ -1,45 +1,45 @@
-/*global describe, it, before, beforeEach, after, afterEach */
 'use strict';
-const assert = require('chai').assert;
+
+const {assert} = require('chai');
 const initSteps = require('app/core/initSteps');
 const services = require('app/components/services');
 const sinon = require('sinon');
+const Declaration = initSteps([`${__dirname}/../../app/steps/action/`, `${__dirname}/../../app/steps/ui`]).Declaration;
 
-describe('invitedata tests', function () {
+describe('declaration unit tests', () => {
+    describe('invitedata tests', () => {
+        let updateInviteDataStub;
 
-    const Declaration = initSteps([__dirname + '/../../app/steps/action/', __dirname + '/../../app/steps/ui']).Declaration;
+        const executorsInvited = [
+            {inviteId: '1'},
+            {inviteId: '2'},
+            {inviteId: '3'}
+        ];
 
-    const executorsInvited = [
-        {inviteId: '1'},
-        {inviteId: '2'},
-        {inviteId: '3'}
-    ];
+        beforeEach(() => {
+            updateInviteDataStub = sinon.stub(services, 'updateInviteData');
+        });
 
-    let updateInviteDataStub;
+        afterEach(() => {
+            updateInviteDataStub.restore();
+        });
 
-    beforeEach(function () {
-        updateInviteDataStub = sinon.stub(services, 'updateInviteData');
-    });
+        it('Success - there are no Errors in the results', (done) => {
+            updateInviteDataStub.returns(Promise.resolve({agreed: null}));
+            Declaration.resetAgreedFlags(executorsInvited).then((results) => {
+                assert.isFalse(results.some(result => result.name === 'Error'));
+                done();
+            })
+            .catch(err => done(err));
+        });
 
-    afterEach(function () {
-        updateInviteDataStub.restore();
-    });
-
-    it('Success - there are no Errors in the results', (done) => {
-        updateInviteDataStub.returns(Promise.resolve({agreed: null}));
-        Declaration.resetAgreedFlags(executorsInvited).then((results) => {
-            assert.isFalse(results.some(result => result.name === 'Error'));
-            done();
-        })
-        .catch(err => done(err));
-    });
-
-    it('Failure - there is an Error in the results', (done) => {
-        updateInviteDataStub.returns(Promise.resolve(new Error('Blimey')));
-        Declaration.resetAgreedFlags(executorsInvited).then((results) => {
-            assert.isTrue(results.some(result => result.name === 'Error'));
-            done();
-        })
-        .catch(err => done(err));
+        it('Failure - there is an Error in the results', (done) => {
+            updateInviteDataStub.returns(Promise.resolve(new Error('Blimey')));
+            Declaration.resetAgreedFlags(executorsInvited).then((results) => {
+                assert.isTrue(results.some(result => result.name === 'Error'));
+                done();
+            })
+            .catch(err => done(err));
+        });
     });
 });

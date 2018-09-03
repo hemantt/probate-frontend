@@ -10,7 +10,7 @@ describe('Executors.js', () => {
         data = {
             list: [
                 {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
-                {fullname: 'ed brown', isApplying: true}
+                {fullName: 'ed brown', isApplying: true}
             ]
         };
     });
@@ -66,7 +66,7 @@ describe('Executors.js', () => {
             data = {
                 list: [
                     {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
-                    {fullname: 'ed brown', isApplying: false, notApplyingKey: 'optionPowerReserved'}
+                    {fullName: 'ed brown', isApplying: false, notApplyingKey: 'optionPowerReserved'}
                 ]
             };
         });
@@ -112,7 +112,7 @@ describe('Executors.js', () => {
             data = {
                 list: [
                     {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
-                    {fullname: 'ed brown', isApplying: false, notApplyingKey: 'optionRenunciated'}
+                    {fullName: 'ed brown', isApplying: false, notApplyingKey: 'optionRenunciated'}
                 ]
             };
         });
@@ -138,8 +138,8 @@ describe('Executors.js', () => {
             data = {
                 list: [
                     {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
-                    {fullname: 'ed brown', isApplying: false, notApplyingKey: 'optionPowerReserved'},
-                    {fullname: 'jake smith', isApplying: false, notApplyingKey: 'optionRenunciated'}
+                    {fullName: 'ed brown', isApplying: false, notApplyingKey: 'optionPowerReserved'},
+                    {fullName: 'jake smith', isApplying: false, notApplyingKey: 'optionRenunciated'}
                 ]
             };
         });
@@ -253,7 +253,7 @@ describe('Executors.js', () => {
         beforeEach(() => {
             data = {
                 list: [
-                    {fullname: 'ed brown', isDead: true}
+                    {fullName: 'ed brown', isDead: true}
                 ]
             };
         });
@@ -276,7 +276,7 @@ describe('Executors.js', () => {
         beforeEach(() => {
             data = {
                 list: [
-                    {fullname: 'James Miller', hasOtherName: true}
+                    {fullName: 'James Miller', hasOtherName: true}
                 ]
             };
         });
@@ -309,8 +309,8 @@ describe('Executors.js', () => {
             data = {
                 list: [
                     {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
-                    {fullname: 'ed brown', isApplying: true},
-                    {fullname: 'jake smith', isDead: true}
+                    {fullName: 'ed brown', isApplying: true},
+                    {fullName: 'jake smith', isDead: true}
                 ]
             };
         });
@@ -343,8 +343,8 @@ describe('Executors.js', () => {
             data = {
                 list: [
                     {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
-                    {fullname: 'ed brown', hasOtherName: true},
-                    {fullname: 'jake smith', has: true}
+                    {fullName: 'ed brown', hasOtherName: true},
+                    {fullName: 'jake smith', has: true}
                 ]
             };
         });
@@ -352,7 +352,7 @@ describe('Executors.js', () => {
         it('should return a list of executors with another name', (done) => {
             const executorsWrapper = new ExecutorsWrapper(data);
             expect(executorsWrapper.executorsWithAnotherName()).to.deep.equal([
-                {fullname: 'ed brown', hasOtherName: true}
+                {fullName: 'ed brown', hasOtherName: true}
             ]);
             done();
         });
@@ -371,6 +371,120 @@ describe('Executors.js', () => {
                 expect(executorsWrapper.executorsWithAnotherName()).to.deep.equal([]);
                 done();
             });
+        });
+    });
+
+    describe('mainApplicant()', () => {
+        beforeEach(() => {
+            data = {
+                list: [
+                    {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
+                    {fullName: 'ed brown', isApplying: true}
+                ]
+            };
+        });
+        it('should return the main applicant', (done) => {
+            const executorsWrapper = new ExecutorsWrapper(data);
+            expect(executorsWrapper.mainApplicant()).to.deep.equal([
+                {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true}
+            ]);
+            done();
+        });
+
+        describe('should return an empty list', () => {
+            it('when none of the executors is the main applicant', (done) => {
+                data.list[0].isApplicant = false;
+                const executorsWrapper = new ExecutorsWrapper(data);
+                expect(executorsWrapper.mainApplicant()).to.deep.equal([]);
+                done();
+            });
+
+            it('when there is no executor data', (done) => {
+                const data = {};
+                const executorsWrapper = new ExecutorsWrapper(data);
+                expect(executorsWrapper.executorsWithAnotherName()).to.deep.equal([]);
+                done();
+            });
+        });
+    });
+
+    describe('executorsToRemove()', () => {
+        beforeEach(() => {
+            data = {
+                list: [
+                    {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
+                    {fullName: 'ed brown', isApplying: true, inviteId: 'invite_123'},
+                    {fullName: 'bob brown', isApplying: true, inviteId: 'invite_456'},
+                    {fullName: 'steve brown', isApplying: true, inviteId: 'invite_789'}
+                ]
+            };
+        });
+        it('should return those not applying who have received an invite email', (done) => {
+            data.list[3].isApplying = false;
+            const executorsWrapper = new ExecutorsWrapper(data);
+            expect(executorsWrapper.executorsToRemove()).to.deep.equal([
+                {fullName: 'steve brown', isApplying: false, inviteId: 'invite_789'}
+            ]);
+            done();
+        });
+
+        describe('should return an empty list', () => {
+            it('when none of the executors has an inviteId', (done) => {
+                delete data.list[1].inviteId;
+                delete data.list[2].inviteId;
+                delete data.list[3].inviteId;
+                const executorsWrapper = new ExecutorsWrapper(data);
+                expect(executorsWrapper.executorsToRemove()).to.deep.equal([]);
+                done();
+            });
+
+            it('when all executors are applying', (done) => {
+                const executorsWrapper = new ExecutorsWrapper(data);
+                expect(executorsWrapper.executorsToRemove()).to.deep.equal([]);
+                done();
+            });
+        });
+    });
+
+    describe('removeExecutorsInviteData()', () => {
+        it('should remove the inviteId of Executors who are not applying', (done) => {
+            const data = {
+                list: [
+                    {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
+                    {fullName: 'ed brown', isApplying: true, inviteId: 'invite_123', emailSent: true},
+                    {fullName: 'bob brown', isApplying: false, inviteId: 'invite_456', emailSent: true},
+                    {fullName: 'steve brown', isApplying: false, inviteId: 'invite_789', emailSent: true}
+                ]
+            };
+            const executorsWrapper = new ExecutorsWrapper(data);
+            expect(executorsWrapper.removeExecutorsInviteData()).to.deep.equal([
+                {firstName: 'james', lastName: 'miller', isApplying: true, isApplicant: true},
+                {fullName: 'ed brown', isApplying: true, inviteId: 'invite_123', emailSent: true},
+                {fullName: 'bob brown', isApplying: false},
+                {fullName: 'steve brown', isApplying: false}
+            ]);
+            done();
+        });
+    });
+
+    describe('executorsRemoved()', () => {
+        it('should return a list of executors to be removed', (done) => {
+            const data = {
+                executorsRemoved: [
+                    {fullName: 'ed brown', isApplying: true, inviteId: 'invite_123'},
+                    {fullName: 'bob brown', isApplying: true, inviteId: 'invite_456'}
+                ]
+            };
+            const executorsWrapper = new ExecutorsWrapper(data);
+            expect(executorsWrapper.executorsRemoved()).to.deep.equal(data.executorsRemoved);
+            done();
+        });
+
+        it('should return an empty list when there are no executors to be removed', (done) => {
+            const data = {};
+            const executorsWrapper = new ExecutorsWrapper(data);
+            expect(executorsWrapper.executorsRemoved()).to.deep.equal([]);
+            done();
         });
     });
 });

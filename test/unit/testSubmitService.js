@@ -1,60 +1,63 @@
 /*global describe, it, before, beforeEach, after, afterEach */
 'use strict';
 const assert = require('chai').assert;
-const sinon = require('sinon');
-const when = require('when');
-const utils = require('app/components/api-utils');
+const nock = require('nock');
 const services = require('app/components/services');
+const formData = require('test/data/complete-form-multipleapplicants');
+const initSteps = require('app/core/initSteps');
+const config = require('app/config');
+const SUBMIT_SERVICE_URL = config.services.submit.url;
+const CREATE_PAYMENT_SERVICE_URL = config.services.payment.createPaymentUrl;
 
 describe('submit service tests', function () {
-    let fetchJsonStub, submitApplicationSpy;
-    const formdata = {
-        'applicant': {
-            firstname: 'bob',
-            lastname: 'smith'
-        },
-        'assets': {}
-    };
+  let ctx = {};
+  const req = {
+    session: {
+      form: {}
+    },
+    query: {}
+  };
 
-    const ctx = {
-        sessionID: '1234567890',
-        applicantEmail: 'wibble@wobble.com'
-    };
+  const steps = initSteps([__dirname + '/../../app/steps/action/', __dirname + '/../../app/steps/ui/']);
 
-    beforeEach(function () {
-        fetchJsonStub = sinon.stub(utils, 'fetchJson');
-        submitApplicationSpy = sinon.spy(services, 'submitApplication');
+  beforeEach(function () {
+    const data = formData;
+    req.session.form = data;
+    const sessionData = steps.PaymentStatus;
+    ctx = sessionData.getContextData(req);
+  });
+
+  afterEach(function () {
+    nock.cleanAll();
+  });
+
+  it('Should successfully update payment status', function (done) {
+    const expectedResponse = {};
+    nock(SUBMIT_SERVICE_URL).post('/updatePaymentStatus')
+      .reply(200, expectedResponse);
+    services.updateCcdCasePaymentStatus(formData, ctx);
+    done();
+  });
+
+  it('Should successfully sent to submit service', function (done) {
+    const expectedResponse = {};
+    const scope = nock(SUBMIT_SERVICE_URL).post('/submit')
+      .reply(200, expectedResponse);
+    services.sendToSubmitService(formData, ctx);
+    assert.isTrue(scope.isDone());
+    done();
+  });
+
+  it('Should successfully find payment', function (done) {
+    nock(`${CREATE_PAYMENT_SERVICE_URL.replace('userId', 123)}`).get('/1')
+      .reply(200, {
+      'state': {
+        'status': 'success'
+      }
     });
-
-    afterEach(function () {
-        fetchJsonStub.restore();
-        submitApplicationSpy.restore();
-    });
-
-    it('Should successfully submit probate application', function (done) {
-
-        fetchJsonStub.returns(when('1488295566956'));
-
-        services.submitApplication(formdata, ctx)
-            .then(function(actualResponse) {
-                sinon.assert.alwaysCalledWith(submitApplicationSpy, formdata);
-                assert.strictEqual('1488295566956', actualResponse);
-                done();
-            })
-            .catch(done);
-    });
-
-    it('Should fail to submit probate application', function (done) {
-
-        const expectedError = new Error('Failed to submit probate application');
-        fetchJsonStub.returns(when(expectedError));
-
-        services.submitApplication(formdata, ctx)
-            .then(function(actualError) {
-                sinon.assert.alwaysCalledWith(submitApplicationSpy, formdata);
-                assert.strictEqual(expectedError, actualError);
-                done();
-            })
-            .catch(done);
-    });
+    formData.paymentId = 1;
+    formData.userId = 123;
+    services.findPayment(formData);
+    done();
+  });
 });

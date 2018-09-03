@@ -1,39 +1,42 @@
 const TestWrapper = require('test/util/TestWrapper'),
     TaskList = require('app/steps/ui/tasklist/index'),
     sessionData = require('test/data/complete-form-undeclared').formdata;
+const nock = require('nock');
+const config = require('app/config');
+const SUBMIT_SERVICE_URL = config.services.submit.url;
+const CREATE_PAYMENT_SERVICE_URL = config.services.payment.createPaymentUrl;
+const USER_ID = config.services.payment.userId;
+const IDAM_S2S_URL = config.services.idam.s2s_url;
 
 describe('payment-status', () => {
     let testWrapper;
-    let submitStub, s2sStub, payStub;
     const expectedNextUrlForTaskList = TaskList.getUrl();
 
-    before(() => {
-        submitStub = require('test/service-stubs/submit');
-        s2sStub = require('test/service-stubs/idam');
-        payStub = require('test/service-stubs/payment');
-    });
-
-   after(() => {
-        submitStub.close();
-        s2sStub.close();
-        payStub.close();
-        delete require.cache[require.resolve('test/service-stubs/submit')];
-        delete require.cache[require.resolve('test/service-stubs/idam')];
-        delete require.cache[require.resolve('test/service-stubs/payment')];
-    });
-
     beforeEach(() => {
-        testWrapper = new TestWrapper('PaymentStatus');
+      testWrapper = new TestWrapper('PaymentStatus');
+
+      nock(SUBMIT_SERVICE_URL).post('/updatePaymentStatus')
+        .reply(200, {});
+      nock(`${CREATE_PAYMENT_SERVICE_URL.replace('userId', USER_ID)}`).get('/1')
+        .reply(200, {
+        'state': {
+          'status': 'success'
+        }
+      });
+
+      nock(IDAM_S2S_URL).post('/lease')
+        .reply(200, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJSRUZFUkVOQ0UifQ.Z_YYn0go02ApdSMfbehsLXXbxJxLugPG' +
+        '8v_3ktCpQurK8tHkOy1qGyTo02bTdilX4fq4M5glFh80edDuhDJXPA');
     });
 
     afterEach(() => {
         testWrapper.destroy();
+        nock.cleanAll();
     });
 
     describe('Verify Content, Errors and Redirection', () => {
-
         it('test right content loaded on the page when net value is greater than 5000£', (done) => {
-            testWrapper.agent.post('/prepare-session/form')
+          testWrapper.agent.post('/prepare-session/form')
                 .send(sessionData)
                 .end(() => {
                     const excludeKeys = ['paragraph2', 'paragraph3'];

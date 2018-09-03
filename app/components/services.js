@@ -64,8 +64,8 @@ const validateFormData = (data, sessionID) => {
     return utils.fetchJson(`${VALIDATION_SERVICE_URL}`, fetchOptions);
 };
 
-const submitApplication = (data, ctx, softStop) => {
-    logger.info('submitApplication');
+const sendToSubmitService = (data, ctx, softStop) => {
+    logger.info('sendToSubmitService');
     const headers = {
         'Content-Type': 'application/json',
         'Session-Id': ctx.sessionID,
@@ -76,7 +76,20 @@ const submitApplication = (data, ctx, softStop) => {
     body.softStop = softStop;
     body.applicantEmail = data.applicantEmail;
     const fetchOptions = utils.fetchOptions({submitdata: body}, 'POST', headers);
-    return utils.fetchJson(`${SUBMIT_SERVICE_URL}`, fetchOptions);
+    return utils.fetchJson(`${SUBMIT_SERVICE_URL}/submit`, fetchOptions);
+};
+
+const updateCcdCasePaymentStatus = (data, ctx) => {
+    logger.info('updateCcdCasePaymentStatus');
+    const headers = {
+        'Content-Type': 'application/json',
+        'Session-Id': ctx.sessionID,
+        'Authorization': ctx.authToken,
+        'UserId': ctx.userId
+    };
+    const body = submitData(ctx, data);
+    const fetchOptions = utils.fetchOptions({submitdata: body}, 'POST', headers);
+    return utils.fetchJson(`${SUBMIT_SERVICE_URL}/updatePaymentStatus`, fetchOptions);
 };
 
 const loadFormData = (id, sessionID) => {
@@ -207,6 +220,13 @@ const getOauth2Token = (code, redirectUri) => {
     });
 };
 
+const removeExecutor = (inviteId) => {
+    logger.info('Removing executor from invitedata table');
+    const removeExecutorUrl = FormatUrl.format(PERSISTENCE_SERVICE_URL, `/invitedata/${inviteId}`);
+    const fetchOptions = utils.fetchOptions({}, 'DELETE', {});
+    return utils.fetchText(removeExecutorUrl, fetchOptions);
+};
+
 const updatePhoneNumber = (inviteId, data) => {
     logger.info('Update Phone Number');
     const findInviteUrl = FormatUrl.format(PERSISTENCE_SERVICE_URL, `/invitedata/${inviteId}`);
@@ -232,7 +252,8 @@ module.exports = {
     findAddress,
     featureToggle,
     validateFormData,
-    submitApplication,
+    sendToSubmitService,
+    updateCcdCasePaymentStatus,
     loadFormData,
     saveFormData,
     createPayment,
@@ -243,6 +264,7 @@ module.exports = {
     getOauth2Token,
     sendPin,
     sendInvite,
+    removeExecutor,
     updatePhoneNumber,
     checkAllAgreed,
     signOut

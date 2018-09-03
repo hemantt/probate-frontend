@@ -2,13 +2,16 @@ const TestWrapper = require('test/util/TestWrapper');
 
 describe('payment-breakdown', () => {
     let testWrapper;
+    let submitStub;
 
     beforeEach(() => {
+        submitStub = require('test/service-stubs/submit');
         testWrapper = new TestWrapper('PaymentBreakdown');
     });
 
     afterEach(() => {
-        testWrapper.destroy();
+      submitStub.close();
+      testWrapper.destroy();
     });
 
     describe('Verify Content, Errors and Redirection', () => {

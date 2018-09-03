@@ -30,9 +30,8 @@ module.exports = {
             url: process.env.VALIDATION_SERVICE_URL || 'http://localhost:8080/validate'
         },
         submit: {
-            url: process.env.SUBMIT_SERVICE_URL || 'http://localhost:8181/submit',
-            port: 8181,
-            path: '/submit'
+            url: process.env.SUBMIT_SERVICE_URL || 'http://localhost:8181',
+            port: 8181
         },
         persistence: {
             url: process.env.PERSISTENCE_SERVICE_URL || 'http://localhost:8282/formdata',

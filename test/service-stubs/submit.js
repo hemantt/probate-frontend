@@ -9,7 +9,7 @@ const router = require('express').Router();
 const SUBMIT_SERVICE_PORT = config.services.submit.port;
 const SUBMIT_SERVICE_PATH = config.services.submit.path;
 
-router.post(SUBMIT_SERVICE_PATH, (req, res) => {
+router.post(SUBMIT_SERVICE_PATH + '/submit', (req, res) => {
     res.status(200);
     res.send({
         submissionReference: '6',
@@ -20,6 +20,19 @@ router.post(SUBMIT_SERVICE_PATH, (req, res) => {
             address: 'Line 1 Bham\nLine 2 Bham\nLine 3 Bham\nPostCode Bham'
         }
     });
+});
+
+router.post(SUBMIT_SERVICE_PATH + '/updatePaymentStatus', (req, res) => {
+  res.status(200);
+  res.send({
+    submissionReference: '6',
+    registry: {
+      name: 'Birmingham',
+      sequenceNumber: '20000',
+      email: 'asdvavv',
+      address: 'Line 1 Bham\nLine 2 Bham\nLine 3 Bham\nPostCode Bham'
+    }
+  });
 });
 
 router.get('/health', (req, res) => {
