@@ -16,4 +16,5 @@ def type = "nodejs"
 withNightlyPipeline(type, product, component) {
     env.TEST_URL = 'https://probate-frontend-aat.service.core-compute-aat.internal'
     enableCrossBrowserTest()
+    enableMutationTest()
 }
